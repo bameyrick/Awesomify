@@ -1,7 +1,7 @@
 Awesomify
 =============
 
-Awesomify is a small (3Kb compressed) JavaScript plugin for Umbraco 7+, that can lazyload images at the correct dimensions of it's placeholder, and with a compression ratio based upon the visitors connection speed (using my [SpeedTest](https://github.com/bameyrick/JS-Speed-Test) plugin.
+Awesomify is a small (3Kb compressed) JavaScript plugin for Umbraco 7+, that can lazyload images at the correct dimensions of it's placeholder, and with a compression ratio based upon the visitors connection speed (using my [SpeedTest](https://github.com/bameyrick/JS-Speed-Test) plugin).
 
 ##Usage
 
