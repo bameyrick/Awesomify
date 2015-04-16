@@ -61,3 +61,18 @@ Awesomify.Init({
   squareSizes: [40, 80, 120, 160, 320, 640, 1300]
 });
 ```
+
+###Methods
+There are a few methods that may be useful to you when using Awesomify. You may want to run Awesomify on a specific element when its added to the page, or you may want to find all new images to be Awesomified (infinate scrolling page).
+
+####Awesomify Me
+Awesomify Me runs awesomify on a specific element.
+```javascript
+Awesomify.Me(document.getElementById('my-id'));
+```
+
+####Find New
+Find New looks for new elements to be awesomified on the page, and runs awesomify on them with the specified settings.
+```javascript
+Awesomify.FindNew();
+```
