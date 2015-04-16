@@ -16,7 +16,7 @@
         sizesSquare: [40, 80, 120, 160, 320, 640]
     };
 
-    var awesomifyElements, speed, ratio, do2x, lastWindowSize, retina = window.devicePixelRatio > 1;
+    var awesomifyElements, speed, ratio, do2x, lastWindowSize = 0, retina = window.devicePixelRatio > 1;
 
     Awesomify.Options = function () {
         return config;
@@ -123,15 +123,21 @@
     }
 
     function process() {
-      
+        
         if (speed != undefined) {
-            for (var i = 0, l = awesomifyElements.length; i < l; i++) {
-                var elem = awesomifyElements[i];
-                if ((config.lazy && isVisible(elem)) || !config.lazy) {
-                    processImage(elem)
-                } else {
-                    i = l + 1;
+
+            if (window.outerWidth > lastWindowSize) {
+                lastWindowSize = window.outerWidth;
+
+                for (var i = 0, l = awesomifyElements.length; i < l; i++) {
+                    var elem = awesomifyElements[i];
+                    if ((config.lazy && isVisible(elem)) || !config.lazy) {
+                        processImage(elem)
+                    } else {
+                        i = l + 1;
+                    }
                 }
+
             }
 
         } else {
