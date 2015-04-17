@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.0.0
+ * Awesomify - 1.0.1
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -60,7 +60,9 @@
 
         // Add scroll EventListener if lazy is specified
         if (config.lazy) {
-            addEvent(window, "scroll", process);
+            addEvent(window, "scroll", function () {
+                process(true);
+            });
         }
 
         process();
@@ -122,11 +124,11 @@
         }
     }
 
-    function process() {
+    function process(scrolling) {
         
         if (speed != undefined) {
 
-            if (window.outerWidth > lastWindowSize) {
+            if ((window.outerWidth > lastWindowSize) || scrolling) {
                 lastWindowSize = window.outerWidth;
 
                 for (var i = 0, l = awesomifyElements.length; i < l; i++) {
