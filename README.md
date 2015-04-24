@@ -19,11 +19,11 @@ For awesomify to work, all images (or elements with background images set) must 
 #####Examples
 ######Image
 ```cs
-<img class="awesomify" src='@Model.Content.GetCropUrl(propertyAlias:"image", width:240, quality:10)&blur=60,sigma-1.5,threshold-1' />
+<img class="awesomify" src='@Model.Content.GetCropUrl(propertyAlias:"image", width:3, quality:1)' />
 ```
 #####Element with Background Image
 ```cs
-<div class="awesomify my-class" style="background-image:url(@Model.Content.GetCropUrl(propertyAlias:"image", width:240, quality:10)&blur=60,sigma-1.5,threshold-1"></div>
+<div class="awesomify my-class" style="background-image:url(@Model.Content.GetCropUrl(propertyAlias:"image", width:3, quality:1)"></div>
 ```
 
 ###Options
