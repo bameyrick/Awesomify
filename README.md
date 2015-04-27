@@ -40,7 +40,7 @@ Awesomify.Options()
 | lazy            | boolean    | Whether or not awesomify should lazy-load images | true                                      |
 | onResize        | boolean    | If the viewport resizes to a larger size, should awesomify download bigger images? | true    |
 | sizes           | array      | An array of image sizes awesomify will download. This means only a few sizes need to be cached by the server | [240, 320, 500, 640, 768, 960, 1280, 1366, 2560]|
-| squareSizes     | array      | Same as above but applies only to images that are square (width == height) | [40, 80, 120, 160, 320, 640] |
+| sizesSquare     | array      | Same as above but applies only to images that are square (width == height) | [40, 80, 120, 160, 320, 640] |
 
 
 ###Initalising Awesomify
@@ -58,7 +58,7 @@ Awesomify.Init({
   lazy: false,
   reSize: true,
   sizes: [240, 320, 500, 640, 768, 960, 1280, 1366, 2560],
-  squareSizes: [40, 80, 120, 160, 320, 640, 1300]
+  squareSizes: [40, 80, 120, 160, 320, 640, 1280]
 });
 ```
 
