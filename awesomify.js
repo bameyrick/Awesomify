@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.0.1
+ * Awesomify - 1.1.0
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -12,8 +12,8 @@
         lazy: true,
         onResize: true,
         cls: "awesomify",
-        sizes: [240, 320, 500, 640, 768, 960, 1280, 1366, 2560],
-        sizesSquare: [40, 80, 120, 160, 320, 640]
+        sizes: [240, 320, 500, 640, 768, 960, 1280, 1366, 1920, 2560],
+        sizesSquare: [40, 60, 80, 120, 160, 320, 640]
     };
 
     var awesomifyElements, speed, ratio, do2x, lastWindowSize = 0, retina = window.devicePixelRatio > 1;
@@ -50,7 +50,7 @@
                 config.sizesSquare = options.sizesSquare;
             }
         }
-        
+
         awesomifyElements = document.querySelectorAll('.' + config.cls);
 
         // Add the EventListener for window resize if specified
@@ -64,7 +64,6 @@
                 process(true);
             });
         }
-
         process();
     };
 
@@ -82,7 +81,7 @@
             SpeedTest.CheckSpeed(function (s) {
                 var delay = 360000;
                 speed = s;
-                
+
                 // Set Compression Ratio and time until next checkspeed
 
                 if (speed <= 250) {
@@ -110,7 +109,7 @@
                 } else if (speed > 10000) {
                     ratio = 99;
                     do2x = true;
-                    delay = 10000;s
+                    delay = 10000; s
                 }
 
                 setTimeout(function () {
@@ -118,14 +117,14 @@
                 }, delay);
             });
 
-            
+
         } else {
             throw Error("SpeedTest not initalised. Awesomify cannot run without SpeedTest.");
         }
     }
 
     function process(scrolling) {
-        
+
         if (speed != undefined) {
 
             if ((window.outerWidth > lastWindowSize) || scrolling) {
@@ -152,19 +151,30 @@
     }
 
     function processImage(elem) {
-
         if (elem) {
 
             var src, isBackground = false;
 
             if (elem.tagName.toLowerCase() == "img") {
-                src = elem.getAttribute('src').split("quality");
+                src = elem.getAttribute('src');
+                if (src.length > 0) {
+                    src = src.split("quality");
+                } else {
+                    src = elem.getAttribute('data-src').split("quality");
+                }
             } else {
-                src = elem.style.backgroundImage.replace("url(", "").replace(")", "").split("quality");
+                src = elem.style.backgroundImage;
+
+                if (src.length > 0) {
+                    src = src.replace("url(", "").replace(")", "").split("quality");
+                } else {
+                    src = elem.getAttribute('data-src').split("quality");
+                }
                 isBackground = true;
             }
 
-            if (src.length > 1) {
+
+            if (src.length > 0) {
                 var w = elem.offsetWidth;
                 var h = elem.offsetHeight;
 
@@ -181,20 +191,19 @@
 
                 var newSrc = src[0] + "quality=" + ratio;
 
-                if (src[1].indexOf("width") >= 1 && src[1].indexOf("height") >= 1) {
-                    var closest = getClosest(input, config.sizesSquare);
-                    var rnd = src[1].split("rnd=")[1];
-                    if (rnd.indexOf("blur") >= 1) {
-                        rnd = rnd.split("&blur=")[0];
+
+                if (src[1]) {
+                    if (src[1].indexOf("width") >= 1 && src[1].indexOf("height") >= 1) {
+                        var closest = getClosest(input, config.sizesSquare);
+
+                        newSrc += "&width=" + closest + "&height=" + closest;
+                    } else {
+                        newSrc += "&" + direction + "=" + getClosest(input, config.sizes);
                     }
-                    newSrc += "&width=" + closest + "&height=" + closest + "&rnd=" + rnd;
                 } else {
-                    var rnd = src[1].split("rnd=")[1];
-                    if (rnd.indexOf("blur") >= 1) {
-                        rnd = rnd.split("&blur=")[0];
-                    }
-                    newSrc += "&" + direction + "=" + getClosest(input, config.sizes) + "&rnd=" + rnd;
+                    newSrc += "&" + direction + "=" + getClosest(input, config.sizes);
                 }
+
                 if (isBackground) {
                     elem.style.backgroundImage = "url(" + newSrc + ")";
                 } else {

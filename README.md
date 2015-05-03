@@ -17,13 +17,13 @@ Firstly you must include [SpeedTest](https://github.com/bameyrick/JS-Speed-Test)
 For awesomify to work, all images (or elements with background images set) must be given a class of *awesomify* (you can set your own to use when initalising Awesomify). Images must also be server using Umbraco's ImageCropper for Awesomify to work (it modifies the URLs).
 
 #####Examples
-######Image
+######Image 
 ```cs
-<img class="awesomify" src='@Model.Content.GetCropUrl(propertyAlias:"image", width:3, quality:1)' />
+<img class="awesomify" data-src='@Model.Content.GetCropUrl(propertyAlias:"image", width:3, quality:1)' />
 ```
 #####Element with Background Image
 ```cs
-<div class="awesomify my-class" style="background-image:url(@Model.Content.GetCropUrl(propertyAlias:"image", width:3, quality:1)"></div>
+<div class="awesomify my-class" data-src="@Model.Content.GetCropUrl(propertyAlias:"image", width:3, quality:1)"></div>
 ```
 
 ###Options
@@ -39,8 +39,8 @@ Awesomify.Options()
 | cls             | string     | The class which you apply to elements you want to awsomify | awesomify                       |
 | lazy            | boolean    | Whether or not awesomify should lazy-load images | true                                      |
 | onResize        | boolean    | If the viewport resizes to a larger size, should awesomify download bigger images? | true    |
-| sizes           | array      | An array of image sizes awesomify will download. This means only a few sizes need to be cached by the server | [240, 320, 500, 640, 768, 960, 1280, 1366, 2560]|
-| sizesSquare     | array      | Same as above but applies only to images that are square (width == height) | [40, 80, 120, 160, 320, 640] |
+| sizes           | array      | An array of image sizes awesomify will download. This means only a few sizes need to be cached by the server | [240, 320, 500, 640, 768, 960, 1280, 1366, 1920, 2560]|
+| sizesSquare     | array      | Same as above but applies only to images that are square (width == height) | [40, 60, 80, 120, 160, 320, 640] |
 
 
 ###Initalising Awesomify
@@ -57,8 +57,8 @@ Awesomify.Init({
   cls: 'my-custom-class',
   lazy: false,
   reSize: true,
-  sizes: [240, 320, 500, 640, 768, 960, 1280, 1366, 2560],
-  squareSizes: [40, 80, 120, 160, 320, 640, 1280]
+  sizes: [240, 320, 500, 640, 768, 960, 1280, 1366, 1920, 2560],
+  squareSizes: [40, 60, 80, 120, 160, 320, 640, 1280]
 });
 ```
 
