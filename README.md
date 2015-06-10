@@ -1,7 +1,7 @@
 Awesomify
 =============
 
-Awesomify is a small (3Kb compressed) JavaScript plugin for Umbraco 7+, that can lazyload images at the correct dimensions of it's placeholder, and with a compression ratio based upon the visitors connection speed (using my [SpeedTest](https://github.com/bameyrick/JS-Speed-Test) plugin).
+Awesomify is a small (3Kb compressed) JavaScript plugin for use with [ImageProcessor](http://imageprocessor.org/) (Comes built into  [Umbraco 7](http://umbraco.com/)), that can lazyload images at the correct dimensions of it's placeholder, and with a compression ratio based upon the visitors connection speed (using my [SpeedTest](https://github.com/bameyrick/JS-Speed-Test) plugin).
 
 ##Usage
 
@@ -14,16 +14,24 @@ Firstly you must include [SpeedTest](https://github.com/bameyrick/JS-Speed-Test)
 ```
 
 ###Prepare Images
-For awesomify to work, all images (or elements with background images set) must be given a class of *awesomify* (you can set your own to use when initalising Awesomify). Images must also be server using Umbraco's ImageCropper for Awesomify to work (it modifies the URLs).
+For awesomify to work, all images (or elements with background images set) must be given a class of *awesomify* (you can set your own to use when initalising Awesomify). You can use the data-src attribute to supply awesomify with image urls, or use the standard src attribute (the former is preferable due to it creating less http requests).
 
 #####Examples
-######Image 
-```cs
-<img class="awesomify" data-src='@Model.Content.GetCropUrl(propertyAlias:"image", width:3, quality:1)' />
+######Image
+```html
+<img class="awesomify" data-src="/images/my-awesome-image.jpg"/>
 ```
 #####Element with Background Image
-```cs
-<div class="awesomify my-class" data-src="@Model.Content.GetCropUrl(propertyAlias:"image", width:3, quality:1)"></div>
+```html
+<div class="awesomify" data-src="/images/my-awesome-image.jpg"></div>
+```
+
+Images can also be requested with ImageProcessor methods, with the width, height, and quality methods being modified as required. 
+*(ImageProcessor's quality method only seems to work on jpegs, so you may need to add the 'format=jpg' method to your urls. This is not automatically added by awesomify, as in some cases you might not want the format to be changed to jpeg)*
+
+######Image with ImageProcessor methods
+```html
+<img class="awesomify" data-src="/images/my-awesome-image.jpg?format=jpg&filter=comic"/>
 ```
 
 ###Options

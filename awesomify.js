@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.1.0
+ * Awesomify - 1.2.0
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -135,7 +135,7 @@
                     if ((config.lazy && isVisible(elem)) || !config.lazy) {
                         processImage(elem)
                     } else {
-                        i = l + 1;
+                        break;
                     }
                 }
 
@@ -157,31 +157,37 @@
 
             if (elem.tagName.toLowerCase() == "img") {
                 src = elem.getAttribute('src');
-                if (src.length > 0) {
-                    src = src.split("quality");
-                } else {
-                    src = elem.getAttribute('data-src').split("quality");
+                if (src.length == 0) {
+                    src = elem.getAttribute('data-src');
                 }
             } else {
                 src = elem.style.backgroundImage;
-
                 if (src.length > 0) {
-                    src = src.replace("url(", "").replace(")", "").split("quality");
+                    src = src.replace("url(", "").replace(")", "");
                 } else {
-                    src = elem.getAttribute('data-src').split("quality");
+                    src = elem.getAttribute('data-src');
                 }
                 isBackground = true;
             }
 
+            src = src.split('?');
+
+            // Always set quality regardless
+            var urlParams = getUrlParams(src[1]);
+            urlParams.quality = ratio;
 
             if (src.length > 0) {
-                var w = elem.offsetWidth;
-                var h = elem.offsetHeight;
+                 
+                    w = elem.offsetWidth,
+                    h = elem.offsetHeight,
+                    input = w,
+                    direction = "width",
+                    removeDirection = "height",
+                    newSrc = src[0] + "?";
 
-                var input = w;
-                var direction = "width";
                 if (w < h) {
                     direction = "height";
+                    removeDirection = "width";
                     input = h;
                 }
 
@@ -189,27 +195,35 @@
                     input = input * 2;
                 }
 
-                var newSrc = src[0] + "quality=" + ratio;
-
-
                 if (src[1]) {
                     if (src[1].indexOf("width") >= 1 && src[1].indexOf("height") >= 1) {
                         var closest = getClosest(input, config.sizesSquare);
-
-                        newSrc += "&width=" + closest + "&height=" + closest;
+                        urlParams.width = closest;
+                        urlParams.height = closest;
                     } else {
-                        newSrc += "&" + direction + "=" + getClosest(input, config.sizes);
+                        urlParams[direction] = getClosest(input, config.sizes);
+                        delete rlParams[removeDirection];
+
                     }
                 } else {
-                    newSrc += "&" + direction + "=" + getClosest(input, config.sizes);
+                    urlParams[direction] = getClosest(input, config.sizes);
+                    delete rlParams[removeDirection];
                 }
 
-                if (isBackground) {
-                    elem.style.backgroundImage = "url(" + newSrc + ")";
-                } else {
-                    elem.setAttribute('src', newSrc);
-                }
+                
+            }
 
+            // Generate new url
+            for (var param in urlParams) {
+                if (urlParams.hasOwnProperty(param)) {
+                    newSrc += "&" + param + "=" + urlParams[param];
+                }
+            }
+
+            if (isBackground) {
+                elem.style.backgroundImage = "url(" + newSrc + ")";
+            } else {
+                elem.setAttribute('src', newSrc);
             }
         }
     }
@@ -239,7 +253,22 @@
                 closest = array[i];
             }
         }
+
         return closest;
+    }
+
+    function getUrlParams(query) {
+
+        var urlParams = {},
+           match,
+           pl = /\+/g,  // Regex for replacing addition symbol with a space
+           search = /([^&=]+)=?([^&]*)/g,
+           decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); };
+
+        while (match = search.exec(query)) {
+            urlParams[decode(match[1]).toLowerCase()] = decode(match[2]);
+        }
+        return urlParams;
     }
 
     var addEvent = function (elem, type, eventHandle) {
@@ -252,7 +281,5 @@
             elem["on" + type] = eventHandle;
         }
     };
-
-    if (typeof String.prototype.contains === 'undefined') { String.prototype.contains = function (it) { return this.indexOf(it) != -1; }; }
 
 }(window.Awesomify = window.Awesomify || {}));
