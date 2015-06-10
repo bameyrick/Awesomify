@@ -17,7 +17,7 @@ Firstly you must include [SpeedTest](https://github.com/bameyrick/JS-Speed-Test)
 For awesomify to work, all images (or elements with background images set) must be given a class of *awesomify* (you can set your own to use when initalising Awesomify). You can use the data-src attribute to supply awesomify with image urls, or use the standard src attribute (the former is preferable due to it creating less http requests).
 
 #####Examples
-######Image
+#####Image
 ```html
 <img class="awesomify" data-src="/images/my-awesome-image.jpg"/>
 ```
@@ -26,10 +26,11 @@ For awesomify to work, all images (or elements with background images set) must 
 <div class="awesomify" data-src="/images/my-awesome-image.jpg"></div>
 ```
 
-Images can also be requested with ImageProcessor methods, with the width, height, and quality methods being modified as required. 
+Images can also be requested with ImageProcessor methods, with the width, height, and quality methods being modified as required.
+
 *(ImageProcessor's quality method only seems to work on jpegs, so you may need to add the 'format=jpg' method to your urls. This is not automatically added by awesomify, as in some cases you might not want the format to be changed to jpeg)*
 
-######Image with ImageProcessor methods
+#####Image with ImageProcessor methods
 ```html
 <img class="awesomify" data-src="/images/my-awesome-image.jpg?format=jpg&filter=comic"/>
 ```
