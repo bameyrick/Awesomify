@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.2.0
+ * Awesomify - 1.2.1
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -104,12 +104,13 @@
                     do2x = true;
                     delay = 30000;
                 } else if (speed > 4000 && speed <= 10000) {
-                    ratio = 15000
+                    ratio = 90
                     do2x = true;
+                    delay = 15000;
                 } else if (speed > 10000) {
                     ratio = 99;
                     do2x = true;
-                    delay = 10000; s
+                    delay = 10000;
                 }
 
                 setTimeout(function () {
