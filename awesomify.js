@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.2.1
+ * Awesomify - 1.2.2
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -203,12 +203,12 @@
                         urlParams.height = closest;
                     } else {
                         urlParams[direction] = getClosest(input, config.sizes);
-                        delete rlParams[removeDirection];
+                        delete urlParams[removeDirection];
 
                     }
                 } else {
                     urlParams[direction] = getClosest(input, config.sizes);
-                    delete rlParams[removeDirection];
+                    delete urlParams[removeDirection];
                 }
 
                 
