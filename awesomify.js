@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.2.2
+ * Awesomify - 1.2.3
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -73,6 +73,7 @@
     }
 
     Awesomify.Me = function (elem) {
+        awesomifyElements.push(elem);
         processImage(elem);
     }
 
