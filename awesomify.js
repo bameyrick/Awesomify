@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.2.4
+ * Awesomify - 1.2.6
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -61,8 +61,10 @@
         // Add scroll EventListener if lazy is specified
         if (config.lazy) {
             addEvent(window, "scroll", function () {
+                //console.log("scrolling")
                 process(true);
             });
+
         }
         process();
     };
@@ -137,7 +139,7 @@
 
                 for (var i = 0, l = awesomifyElements.length; i < l; i++) {
                     var elem = awesomifyElements[i];
-                    if ((config.lazy && isVisible(elem)) || !config.lazy) {
+                    if (!config.lazy || (config.lazy && isVisible(elem))) {
                         processImage(elem)
                     } else {
                         break;
@@ -182,13 +184,13 @@
             urlParams.quality = ratio;
 
             if (src.length > 0) {
-                 
-                    w = elem.offsetWidth,
-                    h = elem.offsetHeight,
-                    input = w,
-                    direction = "width",
-                    removeDirection = "height",
-                    newSrc = src[0] + "?";
+
+                w = elem.offsetWidth,
+                h = elem.offsetHeight,
+                input = w,
+                direction = "width",
+                removeDirection = "height",
+                newSrc = src[0] + "?";
 
                 if (w < h) {
                     direction = "height";
@@ -215,13 +217,18 @@
                     delete urlParams[removeDirection];
                 }
 
-                
+
             }
 
+            var paramCount = 0;
             // Generate new url
             for (var param in urlParams) {
-                if (urlParams.hasOwnProperty(param)) {
-                    newSrc += "&" + param + "=" + urlParams[param];
+                if (urlParams.hasOwnProperty(param) && param != "undefined") {
+                    if (paramCount > 0)
+                        newSrc += "&";
+
+                    newSrc += param + "=" + urlParams[param];
+                    paramCount++;
                 }
             }
 
