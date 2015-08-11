@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.2.6
+ * Awesomify - 1.2.7
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -16,7 +16,7 @@
         sizesSquare: [40, 60, 80, 120, 160, 320, 640]
     };
 
-    var awesomifyElements, speed, ratio, do2x, lastWindowSize = 0, retina = window.devicePixelRatio > 1;
+    var awesomifyElements, speed, ratio, do2x, lastWindowSize = 0, retina = window.devicePixelRatio > 1, to = false;
 
     Awesomify.Options = function () {
         return config;
@@ -25,7 +25,7 @@
     Awesomify.Init = function (options) {
 
         // Check speed first thing as test takes a few seconds to complete
-        CheckSpeed()
+        CheckSpeed();
 
         // Set Options if Specified
         if (options) {
@@ -55,13 +55,19 @@
 
         // Add the EventListener for window resize if specified
         if (config.onResize) {
-            addEvent(window, "resize", process);
+            addEvent(window, "resize", function () {
+                if (to !== false) {
+                    clearTimeout(to);
+                }
+                to = setTimeout(function () {
+                    process();
+                }, 200);
+            });
         }
 
         // Add scroll EventListener if lazy is specified
         if (config.lazy) {
             addEvent(window, "scroll", function () {
-                //console.log("scrolling")
                 process(true);
             });
 
@@ -72,7 +78,7 @@
     Awesomify.FindNew = function () {
         awesomifyElements = document.querySelectorAll('.' + config.cls);
         process();
-    }
+    };
 
     Awesomify.Me = function (elem) {
         if (!Array.isArray(awesomifyElements)) {
@@ -80,72 +86,54 @@
         }
         awesomifyElements.push(elem);
         processImage(elem);
-    }
+    };
 
     function CheckSpeed() {
         if (window.SpeedTest) {
             SpeedTest.CheckSpeed(function (s) {
-                var delay = 360000;
                 speed = s;
 
-                // Set Compression Ratio and time until next checkspeed
-
+                // Set Compression Ratio
                 if (speed <= 250) {
                     ratio = 40;
                     do2x = false;
                 } else if (speed > 250 && speed <= 450) {
                     ratio = 50;
                     do2x = false;
-                    delay = 180000;
                 } else if (speed > 450 && speed <= 750) {
                     ratio = 60;
                     do2x = false;
-                    delay = 120000;
                 } else if (speed > 750 && speed <= 1000) {
                     ratio = 70;
                     do2x = false;
-                    delay = 60000;
                 } else if (speed > 1000 && speed <= 4000) {
                     ratio = 80;
                     do2x = true;
-                    delay = 30000;
                 } else if (speed > 4000 && speed <= 10000) {
-                    ratio = 90
+                    ratio = 90;
                     do2x = true;
-                    delay = 15000;
                 } else if (speed > 10000) {
                     ratio = 99;
                     do2x = true;
-                    delay = 10000;
                 }
-
-                setTimeout(function () {
-                    CheckSpeed();
-                }, delay);
             });
-
-
         } else {
             throw Error("SpeedTest not initalised. Awesomify cannot run without SpeedTest.");
         }
     }
 
     function process(scrolling) {
-
-        if (speed != undefined) {
+        if (speed !== undefined) {
 
             if ((window.outerWidth > lastWindowSize) || scrolling) {
-                lastWindowSize = window.outerWidth;
-
                 for (var i = 0, l = awesomifyElements.length; i < l; i++) {
                     var elem = awesomifyElements[i];
                     if (!config.lazy || (config.lazy && isVisible(elem))) {
-                        processImage(elem)
+                        processImage(elem);
                     } else {
                         break;
                     }
-                }
-
+                }         
             }
 
         } else {
@@ -160,11 +148,11 @@
     function processImage(elem) {
         if (elem) {
 
-            var src, isBackground = false, removeDirection, direction, input;
+            var src, isBackground = false, removeDirection, direction, input, w, h, newSrc;
 
             if (elem.tagName.toLowerCase() == "img") {
                 src = elem.getAttribute('src');
-                if (src.length == 0) {
+                if (src.length === 0) {
                     src = elem.getAttribute('data-src');
                 }
             } else {
@@ -261,7 +249,7 @@
         var closest = null;
 
         for (var i = 0, l = array.length; i < l; i++) {
-            if (closest == null || (Math.abs(array[i] - input) < Math.abs(closest - input))) {
+            if (closest === null || (Math.abs(array[i] - input) < Math.abs(closest - input))) {
                 closest = array[i];
             }
         }
@@ -284,7 +272,7 @@
     }
 
     var addEvent = function (elem, type, eventHandle) {
-        if (elem == null || typeof (elem) == 'undefined') return;
+        if (elem === null || typeof (elem) == 'undefined') return;
         if (elem.addEventListener) {
             elem.addEventListener(type, eventHandle, false);
         } else if (elem.attachEvent) {
