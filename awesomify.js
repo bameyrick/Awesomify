@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.2.7
+ * Awesomify - 1.2.8
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -220,8 +220,11 @@
                 }
             }
 
+            // Remove any stray quotation marks (bug in Firefox)
+            newSrc = newSrc.replace('"', '');
+
             if (isBackground) {
-                elem.style.backgroundImage = "url(" + newSrc + ")";
+                elem.style.backgroundImage = 'url(' + newSrc + ')';
             } else {
                 elem.setAttribute('src', newSrc);
             }
