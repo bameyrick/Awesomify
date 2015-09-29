@@ -1,5 +1,5 @@
 ﻿/*
- * Awesomify - 1.2.8
+ * Awesomify - 1.2.9
  * Ben Meyrick - http://bameyrick.co.uk
  * 
  * Licensed under the MIT license.
@@ -72,6 +72,10 @@
             });
 
         }
+
+        // Add tab focus EventListener
+        addEvent(window, "focus", process);
+
         process();
     };
 
